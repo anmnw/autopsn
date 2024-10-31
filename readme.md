@@ -20,24 +20,11 @@
 3 安装python的依赖环境 
     pip install -r requirement.txt 
 
-## 游戏内设置
-1 fgo：加速、取消技能确认 并且打过一次对应的副本，保证配队之类的正确
-2 starrail ： 保证设置里的延续自动战斗设置打开，并且默认进入自动战斗
-3 genshin： 1 保证背包里没有紫色树脂，并且至少拥有一个浓缩树脂 2战斗逻辑只使用小技能，并且有机会就切左边的人开盾， 因此请保证配队和我的一致(至少保证左位置是帝君)，不然大概率打不过=。=(我的配队也不怎么打得过 有条件把阿忍换成心海) 
-(原的副本位置和解锁进度有关系，推荐按照自己账号的情况进行设置。)
-
-## 开机运行
+### 开机运行
 1 给bat/mouse_ctrl_auto.bat新建一个快捷方式
 2 win+r shell:startup 把快捷方式丢进去
-3 重启 见证奇迹
 
-# 副本配置
-目前适配的三款游戏都一定程度上支持指定要刷的副本，可以修改total_start中的以下变量进行修改。
-    fgo.fgo_go_event = False #白纸化地球False 活动True 
-    fgo.fgo_need_apple = 0
-    fgo.eat_apple_num = 2 #012 金银蓝
-    fgo.dungeon_num = 0 #从0开始 -1是最后一个 
-    psn.starrail_dungeon_type_num = 2
-    psn.starrail_dungeon_num = 9 # 圣遗物是4-3 智识材料2-9
+
+
 
 
