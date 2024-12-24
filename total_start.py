@@ -16,7 +16,7 @@ if __name__ == "__main__":
     fgo.fgo_need_apple = 0
     fgo.eat_apple_num = 2 #012 金银蓝
     fgo.dungeon_num = 0 #从0开始 -1是最后一个 
-    psn.starrail_dungeon_type_num = 2
+    psn.starrail_dungeon_type_num = 4
     psn.starrail_dungeon_num = 1 # 圣遗物是4-3 智识材料2-9
     psn.genshin_dungeon_num = 29 # 4.0圣遗物本 
     delete_jpg_files()
@@ -44,8 +44,8 @@ if __name__ == "__main__":
     close_psn_node.add_node(success_node)
 
     for i in range(10):
-        if not fgo.FgoLogic.fgo_daily_total_success():
-            run_root_node(root_fgo)
+        #if not fgo.FgoLogic.fgo_daily_total_success():
+        #    run_root_node(root_fgo)
 
         if not psn.StarRailLogic.star_rail_daily_total_success():
             run_root_node(root_psn)

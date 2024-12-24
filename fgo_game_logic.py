@@ -565,7 +565,7 @@ class FgoLogic:
                 time.sleep(1)
         if turn.change_person:
             fb.use_change_person(turn.change_person_target1+1,turn.change_person_target2+1) 
-            FgoLogic.wait_start_button(timeout=15)
+            FgoLogic.wait_start_button(timeout=60)
             
         for i in range(len(turn.master_skill)):
             k = i+1
@@ -675,7 +675,7 @@ class FgoLogic:
         b = avg_same(get_new_img(),"03_dungeon_end")
         if b == False:
             return False
-        count = 0
+        count = 0 # 这个不好使的话可以改2 然后改03_dungeon_end的点
         l = ["03_dungeon_end1","03_dungeon_end2","03_dungeon_end3","03_dungeon_end4"]
         for s in l:
             b = avg_same(get_new_img(),s)
