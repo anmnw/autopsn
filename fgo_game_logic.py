@@ -239,7 +239,7 @@ class FgoLogic:
         p_cmd = ["4","4","4","4"]
         ps.go_block(p_cmd,t=[2])
         p1 = ps.p("7")
-        p2 = ps.p("8")
+        p2 = ps.p("9")
         #print(p1,p2)
         psc = PsnController()
         psc.line_click(p1+p2)# 这里点的位置会点到右边开始关卡的部分 不过问题不大 先不管他 
