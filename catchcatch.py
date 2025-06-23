@@ -142,6 +142,10 @@ if __name__ == "__main__":
 
     #img = np.array(img) # rgb hwc yx0
     #print(img.shape)
+    print("how to use:")
+    print("1 push '~' button,start a new photo")
+    print("2 click any keyboard key, record mouse position")
+    print("3 push '~' again, save all record in folder 'cfg', filename is timestamp")
     while(CatcherSington.is_running()):
         time.sleep(1)
     pass

@@ -347,7 +347,7 @@ class GenshinLogic():
         if img == None:
             
             img = get_new_img()
-        b = avg_same(img,"01_dungeon_reward")
+        b = avg_same(img,"01_dungen_touch_tree")
         if b: 
             return b
         
@@ -366,12 +366,20 @@ class GenshinLogic():
         GenshinLogic.go_option()
         ctrl = GenshinController()
         l0 = [[(0,0),(0,3)]]
-        l = [
-             [(0,0),(0,2)],
-             [(0,0),(2,0)],
-             [(0,0),(0,genshin_dungeon_num)]
-        ]
-        
+        if genshin_dungeon_num >=0:
+                l = [
+                     [(0,0),(0,2)],
+                     [(0,0),(2,0)],
+                     [(0,0),(0,genshin_dungeon_num)]
+                ]
+        else:
+                l = [
+                     [(0,0),(0,2)],
+                     [(0,0),(2,0)],
+                     [(0,0),(0,50)],
+                     [(0,0),(0,genshin_dungeon_num+1)]# -2 +1 = -1,up one block
+                ]
+
         if b_go_dungeon_menu:
             PsnController.go_block(l0[0])
         
@@ -529,7 +537,7 @@ class GenshinLogic():
             ctrl.press_once(cmd)
             time.sleep(t)
             ctrl.release_once(cmd)
-            if(time.time()-ts>timeout):
+            if(time.time()-ts>timeout): 
                 return False
         # walk to tree
         ctrl.press_once("move_up")
@@ -558,6 +566,7 @@ class GenshinLogic():
             ctrl.release_once(cmd)
             
             if(time.time()-ts>timeout):
+                ctrl.release_once("move_up")
                 return False
             pass
         
@@ -716,6 +725,8 @@ class GenshinLogic():
         # 走的过程中按方块 截图 看是否触发了用树脂的界面(请常备一个以上的树脂)   find_tree函数只负责到这里
         # 找到之后按X 使用20树脂；如果没有20树脂 会跳到补充树脂的界面
         b_find_tree = GenshinLogic.find_tree()# 现在的逻辑timeout也是走到success里 好像也行
+
+
         time.sleep(2)
         
         ctrl = GenshinController()
@@ -724,10 +735,10 @@ class GenshinLogic():
         time.sleep(1)
         b = GenshinLogic.check_dungeon_reward_ap_not_enought()
 
-        if b :
+        if True :#20250330 这里改下逻辑，找树找不到会退出地城
             print("===========ap not enought=========")
             for i in range(8):# 退出树脂界面
-                time.sleep(0.5)
+                time.sleep(0.25)
                 ctrl.click_once("cancel")
             time.sleep(1)
             
@@ -737,9 +748,10 @@ class GenshinLogic():
             
             print("leave dungeon")
             time.sleep(5)
+        if b: 
             return True
         
-        time.sleep(15)
+        time.sleep(4)#15-11=4
         ctrl.click_once("select")
         time.sleep(2)
         ctrl.click_once("cancel")

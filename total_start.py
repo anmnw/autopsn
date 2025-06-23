@@ -16,9 +16,9 @@ if __name__ == "__main__":
     fgo.fgo_need_apple = 0
     fgo.eat_apple_num = 2 #012 金银蓝
     fgo.dungeon_num = 0 #从0开始 -1是最后一个 
-    psn.starrail_dungeon_type_num = 2
+    psn.starrail_dungeon_type_num = 4
     psn.starrail_dungeon_num = 1 # 圣遗物是4-3 智识材料2-9
-    psn.genshin_dungeon_num = 29 # 4.0圣遗物本 
+    psn.genshin_dungeon_num = 0 # 4.0圣遗物本 
     delete_jpg_files()
 
     BackgroundControllerSingleton.datas["fgo_turns"] = init_turns()
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     genshin_out.add_success(close_psn_node)
     close_psn_node.add_node(success_node)
 
-    for i in range(10):
+    for i in range(99):
         if not fgo.FgoLogic.fgo_daily_total_success():
             run_root_node(root_fgo)
 
@@ -52,6 +52,8 @@ if __name__ == "__main__":
         #run_root_node(rail_in)
         if not psn.GenshinLogic.genshin_daily_total_success():
             run_root_node(root_psn_genshin)
+        #run_root_node(root_psn_genshin)
+
         print(f"============turn stop{i}============")
         print("========================")
         print("========================")
