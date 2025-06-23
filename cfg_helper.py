@@ -10,6 +10,17 @@ def load_datas(module_name):
 def run_module_main(module_name):
     module = importlib.import_module(module_name)
     module.main()
+def save_point_data(path,dic):
+    with open(path, 'w') as file:
+        file.write(f"origin_filename = '{path}'\n")
+        file.write("point_data={\n")
+        for k,v in dic.items():
+            x,y,r,g,b = v
+            print(k)
+            file.write(f'"{k}":[{x},{y},{r},{g},{b}],\n')
+            
+        file.write("}")
+    
 def total_same(img,cfg):
     data = load_datas("cfg."+cfg)
     count = 0

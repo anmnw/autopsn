@@ -69,16 +69,11 @@ class Catcher():
                                     self.img[y][x][1],
                                     self.img[y][x][2]]     
         pass
+
     def save_map(self,path):
-        with open(path, 'w') as file:
-            file.write(f"origin_filename = '{path}'\n")
-            file.write("point_data={\n")
-            for k,v in self.points.items():
-                x,y,r,g,b = v
-                print(k)
-                file.write(f'"{k}":[{x},{y},{r},{g},{b}],\n')
-                
-            file.write("}")
+        import cfg_helper
+        cfg_helper.save_point_data(path,self.points)
+        
     
     def save_img(self):
         #timestamp = time.time()

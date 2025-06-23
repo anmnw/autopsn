@@ -83,16 +83,22 @@ class BootPsn:
         if b == False:
             print("notify: if you loop here,you need to check your ps5 is power on and login")
         return b
-    def close_game():
+    def close_game_only():
         
         psc = PsnController()
-        BootPsn.go_home()
+        #BootPsn.go_home()
         time.sleep(1)
         psc.press("option")
         time.sleep(0.1)
         psc.release("option")
         
         time.sleep(0.5)
+        psc.click("cross")
+        time.sleep(0.1)
+        psc.click("cross")
+        time.sleep(0.1)
+        psc.click("cross")
+        time.sleep(1)
         for i in range(5):
             psc.press("circle")
             time.sleep(0.1)
@@ -100,6 +106,12 @@ class BootPsn:
             time.sleep(1)
 
         time.sleep(2)
+    def close_game():
+        
+        psc = PsnController()
+        BootPsn.go_home()
+        BootPsn.close_game_only()
+        
     def go_home():
         # home ->up -> down -> x -> left 3sec -> check ->once again
         
@@ -195,9 +207,14 @@ class GenshinLogic():
                 time.sleep(1)
                 ctrl.click_once("select")
             ctrl.click_once("option")
-            time.sleep(1.5)
-            if GenshinLogic.check_main_ui():
-                return True
+            #time.sleep(1.5)
+            for i in range(5):
+                time.sleep(0.3)
+                if GenshinLogic.check_main_ui():
+                    return True
+                if GenshinLogic.check_in_dungeon_option_ui():
+                    ctrl.click_once("select") # 防止在副本里面遇到timeout退出的尴尬情况,上线的时候做检查，点option+确定退出副本
+            
             if count > 5:
                 return False
             for i in range(5):
@@ -527,13 +544,15 @@ class GenshinLogic():
             cmd = "camera_right" if x>0.5 else "camera_left" 
             last_move_right = True if x>0.5 else False
             # 这里最好是调个pid 我用映射的就好了 
-            rotate_times = [0.3,0.2,0.1,0.05,0.01,
-                            0.01,0.05,0.1,0.2,0.3]
+            rotate_times = [0.3,0.2,0,0,0,
+                            0,0,0,0.2,0.3]
             t = rotate_times[0]
             for i in range(len(rotate_times)):
                 if x < i*0.1+0.1:
                     t = rotate_times[i]
-            
+            if t == 0:
+                cmd = "move_right" if x>0.5 else "move_left" #small step
+                t = 0.1
             ctrl.press_once(cmd)
             time.sleep(t)
             ctrl.release_once(cmd)
@@ -901,21 +920,30 @@ class GenshinLogic():
     def ln_boot_block():
         node0 = BehaviorNode(callback=BootPsn.go_home_plus_check,name="go_psn_home")# psn home page
         node1 = BehaviorNode(callback=GenshinLogic.boot_genshin,name="boot_genshin_game")# select game and boot up
+        node11 = BehaviorNode(callback=BootPsn.close_game_only,name="close_game")# for reboot
+        node12 = BehaviorNode(callback=GenshinLogic.boot_genshin,name="boot_genshin_game")# select game and boot up
         node2 = BehaviorNode(callback=GenshinLogic.start_game,name="go_main_ui")# open phone page failed close game and reboot it
-        node20 = BehaviorNode(callback=BootPsn.close_game,name="close_game")# for reboot
+
+        #node20 = BehaviorNode(callback=GenshinLogic.boot_genshin,name="close_game")# for reboot
         
         link_node0 = LinkNode(node0) 
         link_node1 = LinkNode(node1) 
+        link_node12 = LinkNode(node12)
         link_node2 = LinkNode(node2) 
+        
 
         link_node0.add_success(link_node1)
         link_node0.add_failed(link_node0)
-        link_node1.add_success(link_node2)
+        link_node1.add_success(node11)
         link_node1.add_failed(link_node0)
         
+        node11.add_node(link_node12)
+        link_node12.add_success(link_node2)
+        link_node12.add_failed(link_node0)
         #link_node2.add_success(node2)
-        link_node2.add_failed(node20)
-        node20.add_node(link_node0)
+        link_node2.add_failed(link_node0)
+        #node20.add_node(node21)
+        #node21.add_node(link_node0)
         
         return link_node0,link_node2
 
@@ -1324,24 +1352,29 @@ class StarRailLogic(BootPsn):
 
         node0 = BehaviorNode(callback=BootPsn.go_home_plus_check,name="go_psn_home")# psn home page
         node1 = BehaviorNode(callback=StarRailLogic.boot_star_rail,name="boot_starrail_game")# select game and boot up
+        
         node2 = BehaviorNode(callback=StarRailLogic.go_main_phone_ui,name="go_main_phone_ui")# open phone page failed close game and reboot it
-        node20 = BehaviorNode(callback=BootPsn.close_game,name="close_game")# for reboot
+        node11 = BehaviorNode(callback=BootPsn.close_game_only,name="close_game")# for reboot
+        node12 = BehaviorNode(callback=StarRailLogic.boot_star_rail,name="boot_starrail_game")# select game and boot up
         #node.callback = BootPsn.boot_psn
         
         #failed_node = BehaviorNode(callback=BootPsn.stop_chiaki)
         #failed_node.callback = 
         link_node0 = LinkNode(node0) 
         link_node1 = LinkNode(node1) 
+        link_node12 = LinkNode(node12) 
         link_node2 = LinkNode(node2) 
         
         link_node0.add_failed(link_node0)
         link_node0.add_success(link_node1)
         link_node1.add_failed(link_node0)
-        link_node1.add_success(link_node2)
-        
+        link_node1.add_success(node11)
+        node11.add_node(link_node12)
+        link_node12.add_success(link_node2)
+        link_node12.add_failed(link_node0)
         #link_node2.add_success(link_node1)
-        link_node2.add_failed(node20)
-        node20.add_node(link_node0) 
+        link_node2.add_failed(link_node0)
+        #node20.add_node(link_node0) 
 
         return link_node0,link_node2# not in out
         pass
