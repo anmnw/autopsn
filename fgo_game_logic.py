@@ -246,6 +246,31 @@ class FgoLogic:
         time.sleep(1)
         return True
         pass
+    def go_earth_dungeon_dragon():
+        ps = PointData("03_white_earth_mark")
+        
+        p_cmd = ["5","6"]
+        ts =    [2, 0.5]
+        ps.go_block(p_cmd,ts)
+        #time.sleep(1)
+        b = False
+        for i in range(5):
+            time.sleep(0.5)
+            b = FgoLogic.check_white_earth()
+            if b:
+                break
+        if b == False:
+            return b
+        time.sleep(2)
+        p_cmd = ["1","1","1","1","3","3","3","3","3"]
+        ps.go_block(p_cmd,t=[2.5])
+        
+        time.sleep(2)
+        ps0 = PointData("03_white_earth2")
+        ps0.move_click("1")
+        time.sleep(1)
+        return True
+        pass
     # 补充体力 如果不需要或者补充失败了(如点击后没有补充 )
     def eat_apple():
         #on going
@@ -848,6 +873,13 @@ class FgoLogic:
         dungeon_failed.add_node(node_stop)
 
         return boot_in,daily_total
+def init_turns_dragon():
+    turn0 = FgoTurn()
+    # 白纸化地球 梅利 尼禄 尼托 t1 012 456 h2 t2  h3 t3 7 h13
+    turn0.use_all_skill()
+    turns = [turn0]*30
+    return turns
+    pass
 def init_turns():
     turn0 = FgoTurn(clean=True)
     # 白纸化地球 梅利 尼禄 尼托 t1 012 456 h2 t2  h3 t3 7 h13

@@ -59,6 +59,7 @@ if __name__ == "__main__":
         print("========================")
         print("========================")
         print("========================")
+    subprocess.Popen("update_result.bat")
     show_saved_img()
     #fgo.FgoLogic.dungeon_loop()
     pass
